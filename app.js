@@ -1,8 +1,10 @@
-require("dotenv").config();
-const connection = require("./db-config");
 const express = require("express");
 const app = express();
-const port = process.env.PORT ?? 3000;
+const connection = require("./db-config");
+const cors = require('cors');
+const router = require('./routes/index.routes')
+
+const port = process.env.PORT ?? 8000;
 
 connection.connect((err) => {
     if (err) {
@@ -12,18 +14,22 @@ connection.connect((err) => {
     }
   });
   
-  app.use(express.json());
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
-app.get("/", (req, res) =>{
-    res.send("Welcom tro express");
+app.use('/', router); 
+
+app.get('/', (req, res) =>{
+  res.send('Welcome home');
 });
 
 
-  app.listen(port, (err) => {
-    if (err) {
-      console.error("Something bad happened");
-    } else {
-      console.log(`Server is listening on ${port}`);
-    }
-  });
+app.listen(port, (err) => {
+  if (err) {
+    console.error("Something bad happened");
+  } else {
+    console.log(`Server is listening on ${port}`);
+  }
+});
   
