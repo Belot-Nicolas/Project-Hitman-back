@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
         res.status(500).send('Error saving the mission')
      } else {
          const id= result.insertId;
-         const createdCharacter = {id, name, location, image, description};
+         const createdMission = {id, name, location, image, description};
          res.status(201).json(createdMission);
     }
     }
@@ -56,13 +56,13 @@ router.put('/:id', (req, res) => {
       } else {
         if (result.affectedRows)
         {
-          const updatedCharacter={
+          const updatedMission={
             id:req.params.id,
             name:req.body.name,
-            location:req.body.mission,
+            location:req.body.location,
             image:req.body.image,
             description:req.body.description}
-          res.status(200).json(updatedCharacter);
+          res.status(200).json(updatedMission);
         } 
         else res.status(404).send('Mision not found.');
       }

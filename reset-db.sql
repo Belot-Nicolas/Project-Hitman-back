@@ -1,3 +1,15 @@
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users`(
+  `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `lastname` varchar(255) NOT NULL,
+  `fistname` varchar(255) NOT NULL,
+  `email` varchar(255) UNIQUE NOT NULL,
+  `hashedPassword` varchar(255) NOT NULL
+);
+
+
+
+
 DROP TABLE IF EXISTS `character`;
 CREATE TABLE `character` (
     `id` INT NOT NULL AUTO_INCREMENT,
@@ -49,6 +61,14 @@ Alexa fut autrefois mariée à un officier de la marine aristocrate, Lyndon Jame
    "Hush est un spécialiste cybersécurité travaillant pour l'ICA, le vrai nom et l'identité de Hush ne sont jamais donnés, ni supposés. Hush sais cacher ses traces. "
  )  
 
+DROP TABLE IF EXISTS `mission`;
+CREATE TABLE `mission` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `location` VARCHAR(50) NOT NULL,
+	  `image`VARCHAR(200) NOT NULL,
+	  `description` TEXT NOT NULL,
+     PRIMARY KEY (`id`));
 
 INSERT INTO
   `mission` (name, location, image, description)
@@ -56,21 +76,22 @@ VALUES
 (
   "Sur le toit du monde", 
 "Dubaï", 
-"https://static.wikia.nocookie.net/hitman/images/f/f3/HITMAN%E2%84%A2_III_Mission_Sur_le_toit_du_monde.png/revision/latest?cb=20210501211001&path-prefix=fr", 
-"Sur le Toit du Monde est la première mission de HITMAN™ III dans laquelle l'agent 47 doit éliminer Carl Ingram et Marcus Stuyvesant, deux des trois partenaires de Providence."),
+"https://i.ibb.co/fS65v7F/HITMAN-III-Mission-Sur-le-toit-du-monde.webp", 
+"Sur le Toit du Monde est la première mission de HITMAN™ III dans laquelle l'agent 47 doit éliminer Carl Ingram et Marcus Stuyvesant, deux des trois partenaires de Providence.")
 (
-  "Mort dans la Famille", "Angleterre Dartmoor",
-"https://static.wikia.nocookie.net/hitman/images/c/cc/HITMAN%E2%84%A2_III_Destination_Dartmoor.webp/revision/latest/scale-to-width-down/1000?cb=20210509123343&path-prefix=fr",
+  "Mort dans la Famille",
+ "Angleterre Dartmoor",
+"https://i.ibb.co/ftMLm9X/HITMAN-III-Destination-Dartmoor.webp",
 "Mort dans la Famille est la deuxième mission de HITMAN™ III dans laquelle l'agent 47 doit éliminer Alexa Carlisle, la troisième et dernière des Partenaires de Providence en plus d'acquérir des informations sur Arthur Edwards.")
 (
   "Prédateur Perché",
   "	Berlin",
-  "https://static.wikia.nocookie.net/hitman/images/2/22/Centrale_nucl%C3%A9aire_de_Berlin.webp/revision/latest?cb=20210510164808&path-prefix=fr",
+  "https://i.ibb.co/dQpBht1/Centrale-nucl-aire-de-Berlin.webp",
   "Prédateur Perché est la troisième mission de HITMAN™ III dans laquelle l'agent 47 doit éliminer cinq agents de l'ICA, envoyés pour tuer Olivia Hall, à leur point de rendez-vous, à Berlin en Allemagne."
 )
 (
  "Fin d'une Ère",
  "Chongping",
- "https://static.wikia.nocookie.net/hitman/images/0/0c/Fond_Chongqing.webp/revision/latest?cb=20210509123556&path-prefix=fr",
+ "https://i.ibb.co/kyVXbBb/Fond-Chongqing.webp",
  "Fin d'une Ère est la quatrième mission de HITMAN™ III dans laquelle l'agent 47 doit éliminer Hush et Imogen Royce. Il doit en plus, pirater le cœur de données pour supprimer définitivement tous les fichiers de l'ICA."
 );
