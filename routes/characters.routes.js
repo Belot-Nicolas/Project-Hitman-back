@@ -1,4 +1,3 @@
-const connection = require('../db-config');
 const router = require('express').Router();
 const characters = require('../models/characters.model')
 
@@ -47,30 +46,6 @@ router.post('/', (req, res) => {
     }
   });
 
-// router.put('/:id', (req, res) => {
-//   connection.query(
-//     'UPDATE characters SET ? WHERE id = ?',
-//     [req.body,req.params.id],
-//     (err, result) => {
-//       if (err) {
-//         console.log(err);
-//         res.status(500).send('Error updating a character');
-//       } else {
-//         if (result.affectedRows)
-//         {
-//           const updatedCharacter={
-//             id:req.params.id,
-//             name:req.body.name,
-//             age:req.body.age,
-//             image:req.body.image,
-//             description:req.body.description}
-//           res.status(200).json(updatedCharacter);
-//         } 
-//         else res.status(404).send('Character not found.');
-//       }
-//     }
-//   );
-// });
 
 router.put('/:id', (req, res) => {
   let existingCharacter = null;
