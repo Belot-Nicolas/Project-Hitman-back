@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/users.model')
-
+const Joi = require('joi');
 
 
 router.get('/', (req, res) => {
@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(500).send('Error retrieving character from database');
+        res.status(500).send('Error retrieving user from database');
       });
   });
 
@@ -49,6 +49,43 @@ router.get('/:id', (req, res) => {
       });
   });
 
+  const userSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+})
+
+  router.post('/login', (req, res) => {
+    // on reprend ici les verif de donnees utilisateur dans le formulaire
+    const { value, error } = User.validateLogin(req.body);
+    
+    console.log(value);
+
+    if (error) {
+      return res.status(400).json(error);
+    }
+  
+    const [[existingUser]] = User.findByEmail(value.email);
+  
+    if (!existingUser) {
+      return res.status(403).json({
+        message: 'utilisateur non trouve ou le mot de passe ne correspond au compte'
+      })
+    }
+  
+    const verified = argon2.verify(existingUser.password, value.password)
+  
+    if (!verified) {
+      return res.status(403).json({
+        message: 'utilisateur non trouve ou le mot de passe ne correspond au compte'
+      })
+    }
+  
+    // const jwtKey = generateJwt(value.email, 'ROLE_USER');
+    // return res.json({
+    //   credentials: jwtKey
+    // })
+  })
+
   router.put('/:id', (req, res) => {
     let existingUser = null;
     let validationErrors = null;
@@ -79,7 +116,7 @@ router.get('/:id', (req, res) => {
       });
   });
 
-  usersRouter.delete('/:id', (req, res) => {
+  router.delete('/:id', (req, res) => {
     User.destroy(req.params.id)
       .then((deleted) => {
         if (deleted) res.status(200).send('🎉 User deleted!');

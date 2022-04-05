@@ -14,6 +14,13 @@ const validate = (data, forCreation = true) => {
     }).validate(data, { abortEarly: false }).error;
   };
 
+  const validateLogin = (data) => { 
+    return Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+}).validate(data, { abortEarly: false }).error;
+  };
+
   const findMany = () => {
     return db
       .query('SELECT * FROM users')
@@ -29,7 +36,7 @@ const findOne = (id) => {
   const findByEmail = (email) => {
     return db
       .query('SELECT * FROM users WHERE email = ?', [email])
-      .then(([results]) => results[0]);
+      .then(([results]) => results);
   };
   
   const findByEmailWithDifferentId = (email, id) => {
@@ -83,6 +90,7 @@ const hashingOptions = {
     findMany,
     findOne,
     validate,
+    validateLogin,
     create,
     update,
     destroy,

@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`(
   `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `lastname` varchar(255) NOT NULL,
-  `fistname` varchar(255) NOT NULL,
+  `firstname` varchar(255) NOT NULL,
   `email` varchar(255) UNIQUE NOT NULL,
   `hashedPassword` varchar(255) NOT NULL
 );
