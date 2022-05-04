@@ -4,7 +4,8 @@ CREATE TABLE `users`(
   `lastname` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
   `email` varchar(255) UNIQUE NOT NULL,
-  `hashedPassword` varchar(255) NOT NULL
+  `hashedPassword` varchar(255) NOT NULL,
+  `token` varchar(255) null
 );
 
 

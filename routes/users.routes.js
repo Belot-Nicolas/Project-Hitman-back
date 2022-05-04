@@ -5,12 +5,12 @@ const Joi = require('joi');
 
 router.get('/', (req, res) => {
     User.findMany()
-      .then((character) => {
-        res.json(character);
+      .then((users) => {
+        res.json(users);
       })
       .catch((err) => {
         console.log(err);
-        res.status(500).send('Error retrieving user from database');
+        res.status(500).send('Error retrieving users from database');
       });
   });
 
@@ -54,37 +54,61 @@ router.get('/:id', (req, res) => {
     password: Joi.string().required(),
 })
 
-  router.post('/login', (req, res) => {
-    // on reprend ici les verif de donnees utilisateur dans le formulaire
-    const { value, error } = User.validateLogin(req.body);
-    
-    console.log(value);
+// router.post('/login',  (req, res) => {
+//   // on reprend ici les verif de donnees utilisateur dans le formulaire
+//   const { value, error } = userSchema.validate(req.body);
 
-    if (error) {
-      return res.status(400).json(error);
-    }
+//   console.log(value)
   
-    const [[existingUser]] = User.findByEmail(value.email);
-  
-    if (!existingUser) {
-      return res.status(403).json({
-        message: 'utilisateur non trouve ou le mot de passe ne correspond au compte'
-      })
-    }
-  
-    const verified = argon2.verify(existingUser.password, value.password)
-  
-    if (!verified) {
-      return res.status(403).json({
-        message: 'utilisateur non trouve ou le mot de passe ne correspond au compte'
-      })
-    }
-  
-    // const jwtKey = generateJwt(value.email, 'ROLE_USER');
-    // return res.json({
-    //   credentials: jwtKey
-    // })
-  })
+//   if (error) {
+//     return res.status(400).json(error);
+//   }
+
+//   const [[existingUser]] = User.findByEmail(value.email);
+
+//   if (!existingUser) {
+//     return res.status(403).json({
+//       message: 'utilisateur no trouve ou le mot de passe ne correspond au compte'
+//     })
+//   }
+
+//   const verified = User.verifyPassword(existingUser.password, value.password)
+
+//   if (!verified) {
+//     return res.status(403).json({
+//       message: 'utilisateur non trouve ou le mot de passe ne correspond au compte'
+//     })
+//   }
+
+//   const jwtKey = generateJwt(value.email, 'ROLE_USER');
+//   return res.json({
+//     credentials: jwtKey
+//   })
+// })
+
+  // router.post("/login", (req, res) => {
+  //   const { email, password } = req.body;
+
+  //   console.log(email, password)
+
+  //   User.findByEmail(email).then((user) => {
+  //     if (!user) res.status(401).send("Invalid credentials");
+  //     else {
+  //       User.verifyPassword(password, user.hashedPassword).then(
+  //         (passwordIsCorrect) => {
+  //           if (passwordIsCorrect) {
+  //             const token = calculateToken(email);
+  //             User.update(user.id, { token: token })
+  //             res.cookie('user_token', token)
+  //             res.send()
+  //           }
+  //           else res.status(401).send('Invalid credentials');
+              
+  //         }
+  //       )
+  //   }
+  //   });
+  // });
 
   router.put('/:id', (req, res) => {
     let existingUser = null;

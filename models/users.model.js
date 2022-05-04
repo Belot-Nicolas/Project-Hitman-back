@@ -7,18 +7,11 @@ const db = connection.promise();
 const validate = (data, forCreation = true) => {
     const presence = forCreation ? 'required' : 'optional';
     return Joi.object({
-      email: Joi.string().email().max(255).presence(presence),
-      password: Joi.string().min(8).max(50).presence(presence),
-      firstname: Joi.string().max(255).presence(presence),
       lastname: Joi.string().max(255).presence(presence),
+      firstname: Joi.string().max(255).presence(presence),
+      email: Joi.string().email().max(255).presence(presence),
+      password: Joi.string().min(3).max(50).presence(presence),
     }).validate(data, { abortEarly: false }).error;
-  };
-
-  const validateLogin = (data) => { 
-    return Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-}).validate(data, { abortEarly: false }).error;
   };
 
   const findMany = () => {
@@ -33,10 +26,16 @@ const findOne = (id) => {
       .then(([results]) => results[0]);
   };
 
+  const findByToken = (token) => {
+    return db
+      .query('SELECT * FROM users WHERE token = ?', [token])
+      .then(([results]) => results[0]);
+  };
+
   const findByEmail = (email) => {
     return db
       .query('SELECT * FROM users WHERE email = ?', [email])
-      .then(([results]) => results);
+      .then(([results]) => results[0]);
   };
   
   const findByEmailWithDifferentId = (email, id) => {
@@ -83,14 +82,14 @@ const hashingOptions = {
   };
   
   const verifyPassword = (plainPassword, hashedPassword) => {
-    return argon2.verify(hashedPassword, plainPassword, hashingOptions);
+    return argon2.verify(hashedPassword, plainPassword,   hashingOptions);
   };
 
   module.exports = {
     findMany,
     findOne,
     validate,
-    validateLogin,
+    findByToken,
     create,
     update,
     destroy,
