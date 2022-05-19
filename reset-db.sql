@@ -3,6 +3,8 @@ CREATE TABLE `users`(
   `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `lastname` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
+  `role` varchar(10) null,
+  `image` varchar(255) null,
   `email` varchar(255) UNIQUE NOT NULL,
   `hashedPassword` varchar(255) NOT NULL,
   `token` varchar(255) null
@@ -11,8 +13,8 @@ CREATE TABLE `users`(
 
 
 
-DROP TABLE IF EXISTS `character`;
-CREATE TABLE `character` (
+DROP TABLE IF EXISTS `characters`;
+CREATE TABLE `characters` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,
     `age` INT NOT NULL,

@@ -6,42 +6,44 @@ const validate = (data, forCreation = true) => {
     const presence = forCreation ? 'required' : 'optional';
     return Joi.object({
       name: Joi.string().max(50).presence(presence),
-      age: Joi.number().presence(presence),
+      location: Joi.string().max(50).presence(presence),
       description: Joi.string().presence(presence),
     }).validate(data, { abortEarly: false }).error;
   };
 
 const findMany = () => {
     return db
-      .query('SELECT * FROM characters')
+      .query('SELECT * FROM mission')
       .then(([results]) => results);
       
   };
 const findOne = (id) => {
     return db
-      .query('SELECT * FROM characters WHERE id = ?', [id])
+      .query('SELECT * FROM mission WHERE id = ?', [id])
       .then(([results]) => results[0]);
   };
-  
-  const create = ({ name, age, description }, image) => {
+
+
+
+  const create = ({ name, location, description }, image) => {
     return db
       .query(
-        'INSERT INTO characters ( name, age, image, description) VALUES (?, ?, ?, ?)',
-        [ name, age, image, description]
+        'INSERT INTO mission ( name, location, description, image) VALUES (?, ?, ?, ?)',
+        [ name, location, description, image]
       )
       .then(([result]) => {
         const id = result.insertId;
-        return { id,  name, age, image, description };
+        return { id,  name, location, image, description };
       });
   };
 
   const update = (id, newAttributes) => {
-  return db.query('UPDATE characters SET ? WHERE id = ?', [newAttributes, id]);
+  return db.query('UPDATE mission SET ? WHERE id = ?', [newAttributes, id]);
 };
 
 const destroy = (id) => {
   return db
-    .query('DELETE FROM characters WHERE id = ?', [id])
+    .query('DELETE FROM mission WHERE id = ?', [id])
     .then(([result]) => result.affectedRows !== 0);
 };
 

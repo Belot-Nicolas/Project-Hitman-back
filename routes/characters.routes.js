@@ -1,6 +1,24 @@
 const router = require('express').Router();
-const characters = require('../models/characters.model')
+const characters = require('../models/characters.model.js');
+const multer = require('multer');
 
+const MIME_TYPES = {
+  "image/jpg": "jpg",
+  "image/jpeg": "jpg",
+  "image/png": "png",
+};
+
+const storage = multer.diskStorage({
+    
+  destination: (req, file, callback) => {
+    callback(null, "uploads/imgCharacters/");
+  },
+  filename: (req, file, callback) => {
+    const name = file.originalname.split(" ").join("_");
+    const extension = MIME_TYPES[file.mimetype];
+    callback(null, `${name}_${Date.now()}.${extension}`);
+  },
+});
 
 
 router.get('/', (req, res) => {
@@ -30,12 +48,12 @@ router.get('/:id', (req, res) => {
 });
 
 
-router.post('/', (req, res) => {
+router.post('/', multer({storage}).single('image'), (req, res) => {
   const error = characters.validate(req.body);
   if (error) {
     res.status(422).json({ validationErrors: error.details });
   } else {
-    characters.create(req.body)
+    characters.create(req.body, req.file.path)
       .then((createdCharacter) => {
         res.status(201).json(createdCharacter);
       })
@@ -64,22 +82,22 @@ router.put('/:id', (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err === 'RECORD_NOT_FOUND')
-        res.status(404).send(`Movie with id ${req.params.id} not found.`);
+        res.status(404).send(`Characters with id ${req.params.id} not found.`);
       else if (err === 'INVALID_DATA')
         res.status(422).json({ validationErrors: validationErrors.details });
-      else res.status(500).send('Error updating a movie.');
+      else res.status(500).send('Error updating a character.');
     });
 });
 
 router.delete('/:id', (req, res) => {
   characters.destroy(req.params.id)
     .then((deleted) => {
-      if (deleted) res.status(200).send('🎉 Movie deleted!');
-      else res.status(404).send('Movie not found');
+      if (deleted) res.status(200).send('🎉 Character deleted!');
+      else res.status(404).send('Character not found');
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send('Error deleting a movie');
+      res.status(500).send('Error deleting a character');
     });
 });
 
